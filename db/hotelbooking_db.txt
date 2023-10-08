@@ -1,0 +1,105 @@
+create table admin(
+	admin_id int auto_increment primary key,
+	admin_email varchar(100) not null,
+	admin_pwd varchar(50) not null,
+	admin_name varchar(100) not null,
+	admin_phone varchar(20) not null
+);
+
+insert into admin (admin_email, admin_pwd, admin_name, admin_phone) values('admin@gmail.com', 'admin', 'Jay Kadam', '9823374979');
+
+create table hotel(
+	id int auto_increment primary key,
+	hotel_name varchar(255) not null,
+	hotel_address varchar(255) not null,
+	hotel_phone varchar(15) not null,
+	hotel_email varchar(100) not null,
+	hotel_pwd varchar(50) not null,
+	hotel_lat float not null,
+	hotel_long float not null,
+	hotel_pic varchar(100),
+	hotel_disc text,
+	status int default 0
+);
+
+insert into hotel(hotel_name, hotel_address, hotel_phone, hotel_email, hotel_pwd, hotel_lat, hotel_long, hotel_pic, hotel_disc) values
+('V by Vinnca Hotel & Spa', 'Madhapar, Bhuj, Gujarat, India', '9823374979', 'vinnca2023@gmail.com', 'test2023', 23.239361, 69.719009, 'hotels/hotel1.jpg',"<b>V By Vinnca Hotel & Spa</b>, a 3-star facility equipped Spa Hotel close to the Anjar – Bhuj Highway. It is perfect and simple to find offering the best of eating alternatives with the best offices like recreation center and spa alongside extensive lobbies to have any parties.V by Vinnca is a classic choice for the travellers looking for few night stay or to dine in while going towards Kutch . The interiors are finely done to keep the guests happy. The hotel offers a wide range of personalized services and facilities to help make your stay in bhuj-Kutch a memorable one. The hotel is a pure Vegetarian and welcomes all to come and enjoy your stay by allowing us to serve you in the best comfort and value for money. "),
+('The Lake View Munnar Resort', 'Idduki, Kerala, India', '8698958117', 'customer-care@lakeviewmunnar.com', 'test203', 10.016075, 77.032753, 'hotels/hotel2.jpg',"The Lake View Munnar resort is a small hotel which offers great accommodation (small villas) for everyone who comes to visit the area. It is situated Near Senkulam Dam in Munnar, which is a part of Idukki District in Kerala, India. The hotel is quite affordable and offering great services, including catering and a small pool. It is a wonderful option for those who want to visit the area and explore the local nature."),
+('Palladium Hotel', 'The St. Regis Mumbai, Maharashtra, India', '9822290095', 'admin@palladium.com', 'test2023', 18.993652, 72.825218, 'hotels/hotel3.jpg',"One of the tallest and the most modern hotels in India, Palladium Hotel (now known as The St. Regis Mumbai), can be found at 462, Senapati Bapat Marg, Lower Parel, Mumbai, Maharashtra, India. The hotel was opened in 2012 and since then it has been one of the most popular and demanded accommodation facility in the city. The hotel is situated in the most important business part of the city, near Nehru Science Center and Marathon Futurex facility.");
+
+create table amenities(
+	id int auto_increment primary key,
+	parking int default 0,
+	lift int default 0,
+	door int default 0,
+	washroom int default 0,
+	public int default 0,
+	doorways int default 0,
+	power_switches int default 0,
+	door_handles int default 0,
+	bed_space int default 0,
+	shower int default 0,
+	shower_seat int default 0,
+	grab_bars int default 0,
+	raised_toilet int default 0,
+	proximity1 int default 0,
+	proximity2 int default 0
+);
+
+insert into amenities(parking, lift, door, washroom, public, doorways, power_switches, door_handles, bed_space, shower, shower_seat, grab_bars, raised_toilet, proximity1, proximity2) values (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0),
+(1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1);
+
+CREATE TABLE customer (
+    custUid int(11) auto_increment primary key,
+    custName varchar(255) NOT NULL,
+    custEmail varchar(255) NOT NULL,
+    custPwd varchar(255) NOT NULL,
+    custAge int(2) NOT NULL,
+    custPlace varchar(255) NOT NULL,
+    custGender char(10) NOT NULL
+);
+
+CREATE TABLE packages (
+    packageId int(11) auto_increment primary key,
+    hotelUid int(11) references hotel(id) on delete cascade,
+    packageName varchar(255) NOT NULL,
+    packagePrice double(10,2) NOT NULL,
+    packageDesc varchar(255) NOT NULL,
+    packageImage varchar(255) NOT NULL,
+    isDeleted boolean NOT NULL DEFAULT false
+);
+
+CREATE TABLE room (
+    roomId int(11) auto_increment primary key,
+    roomNum varchar(255) NOT NULL,
+    packageId int(11) references packages(packageId) on delete cascade,
+    hotelUid int(11) references hotel(id) on delete cascade,
+    isDeleted boolean NOT NULL DEFAULT false
+);
+
+CREATE TABLE reservation (
+    resId int(11) auto_increment primary key,
+    checkInDate date NOT NULL,
+    checkOutDate date NOT NULL,
+    custUid int(11) references customer(custUid) on delete cascade,
+    roomId int(11) references room(roomId) on delete cascade
+);
+
+create table feedback(
+	id int auto_increment primary key,
+	feedback_date date,
+	feedback_message text,
+	rating varchar(30),
+	resId int references reservation(resId) on delete cascade
+);
+
+CREATE TABLE payment (
+    refNo int(11) auto_increment primary key,
+    finalPrice double(10,2) NOT NULL,
+    payMethod varchar(255) NOT NULL,
+    payStatus varchar(255) NOT NULL
+);
+
+  
+
